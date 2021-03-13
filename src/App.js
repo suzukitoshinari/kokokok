@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Button from './Button';
+import Api from './componets/Button';
+import Resources from './componets/Resources';
+import jsonplaceholder from './apis/jsonplaceholder';
 
-function App() {
+const App = () => {
+  const [resources, setResources] = useState([]);
+
+  const getPosts = async() => {
+    try {
+      const posts = await jsonplaceholder.get('/posts');
+      setResources(posts.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getAlbums = async() => {
+    try {
+      const albums = await jsonplaceholder.get('/albums');
+      setResources(albums.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <div>ボタンのprops</div>
+        <Button title='赤'/>
+        <Button title='青'/>
+        <Button title='黄色'/>
+        <Button title='緑'/>
+      </div>
+      <div style={{ margin: '30px'}}>
+        <div style={{ margin: '20px' }}>react-api</div>
+        <Api onClick={getPosts} color='red' text='posts' />
+        <Api onClick={getAlbums} color='blue' text='album' />
+        <Resources resources={resources} />
+      </div>
+    </>
   );
 }
 
